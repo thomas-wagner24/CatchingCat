@@ -93,6 +93,21 @@ class World: GameObject {
   void Update(float deltaTime) override;
 
   void step();
+
+  static std::vector<Point2D> neighbors(Point2D point)
+  { 
+      std::vector<Point2D> n;
+      n.push_back(NE(point));
+      n.push_back(NW(point));
+      n.push_back(SE(point));
+      n.push_back(SW(point));
+      n.push_back(E(point));
+      n.push_back(W(point));
+      n.push_back(N(point));
+      n.push_back(S(point));
+      return n;
+  }
+
 };
 
 #endif  // WORLD_H

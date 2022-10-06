@@ -1,6 +1,6 @@
 #include "Agent.h"
 
-bool queueEntry::operator<(const queueEntry& rhs) const {
-
+bool Node::operator<(const Node& rhs) const {
+  return this->weight < rhs.weight;
 
 }
