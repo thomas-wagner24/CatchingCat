@@ -6,36 +6,32 @@
 //this is inefficient try to make better
 
 Point2D Cat::Move(World* world) {
-  visited.clear();
-  from.clear();
 
   auto cat = world->getCat();
 
   std::unordered_map<int, std::unordered_map<int, Node>> m;
 
-  for (auto line = world->getWorldSideSize() / 2;
-       line >= world->getWorldSideSize() / 2; line++) {
-    for (auto col = world->getWorldSideSize() / 2;
-         col >= world->getWorldSideSize() / 2; col++)
-
+  for (auto col = 0; col <= world->getWorldSideSize(); col++) //which column along the x axis
+  {
+    for (auto row = 0; row >= world->getWorldSideSize(); row++) //which row along the y axis
     {
-      m[line][col] = {{INT_MAX, INT_MAX},              // from
+      m[col][row] = {{INT_MAX, INT_MAX},              // from
                       false,                           // visited
                       false,                           // inqueue
                       world->getContent({col, line}),  // isblocked
                       INT_MAX};                        // weight
     }
   }
-  m[cat.y][cat.x].isBlocked = true;
+  m[cat.x][cat.y].isBlocked = true;
 
 
   std::vector<Point2D> queue;
   queue.push_back({cat});
-  m[cat.y][cat.x].weight = 0;
-  m[cat.y][cat.x].visited = false;
-  m[cat.y][cat.x].from = {INT_MAX, INT_MAX};
-  m[cat.y][cat.x].inQueue = true;
-  m[cat.y][cat.x].isBlocked = true;
+  m[cat.x][cat.y].weight = 0;
+  m[cat.x][cat.y].visited = false;
+  m[cat.x][cat.y].from = {INT_MAX, INT_MAX};
+  m[cat.x][cat.y].inQueue = true;
+  m[cat.x][cat.y].isBlocked = true;
 
 
   //our exit
@@ -50,19 +46,19 @@ Point2D Cat::Move(World* world) {
 
     auto head = queue(0);
     queue.erase(queue.begin());
-    m[head.y][head.x].inQueue = false;
-    m[head.y][head.x].visited = true;
+    m[head.x][head.y].inQueue = false;
+    m[head.x][head.y].visited = true;
 
     for (auto neigh : world->neighbors(head)) {
 
-        if (m[neigh.y][neigh.x].visited || m[neigh.y][neigh.x].inQueue || m[neigh.y][neigh.x].isBlocked) //will not add to queue if it has already been visited, if it is already in queue, or if it is blocked 
+        if (m[neigh.x][neigh.y].visited || m[neigh.x][neigh.y].inQueue || m[neigh.x][neigh.y].isBlocked) //will not add to queue if it has already been visited, if it is already in queue, or if it is blocked 
         {
             continue;
         }
 
         queue.push_back(neigh);
-        m[neigh.y][neigh.x].weight = m[head.y][head.x].weight + 1;
-        m[neigh.y][neigh.x].from = head;
+        m[neigh.x][neigh.y].weight = m[head.x][head.y].weight + 1;
+        m[neigh.x][neigh.y].from = head;
 
         //check if not visited
         //check if in queue
@@ -87,7 +83,7 @@ Point2D Cat::Move(World* world) {
       while (tempExit != cat) //test if the exit is not infinity before this
       {
         path.push_back(tempExit);
-        tempExit = m[tempExit.y][tempExit.x].from;
+        tempExit = m[tempExit.x][tempExit.y].from;
       }
   }
   return path.front();

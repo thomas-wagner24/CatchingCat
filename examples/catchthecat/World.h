@@ -29,7 +29,7 @@ class World: GameObject {
   std::vector<bool> worldState;
 
   // size of the side of the map
-  int sideSize=0;
+  int sideSize = 11;
   // todo: optimization make the world state only use 16 Bytes.
   // hints on how to do it:
   // the world have 11x11 size, so it needs 121 bits to represent it. in other words we need 16 bytes to fully represent it. bit representation: 0 empty, 1 blocked.
@@ -51,9 +51,12 @@ class World: GameObject {
   // check if catcher can move to the position required
   bool catcherCanMoveToPosition(Point2D pos) const;
 
+  // returns true if cat wins on the given space
+  bool catWinsOnSpace(Point2D point);
+
  public:
   explicit World(Engine* pEngine, int size=11);
-
+  explicit World(Engine* pEngine, int size, bool catTurn, Point2D cat, std::vector<bool> world);
   // directions
   static Point2D NE(const Point2D &p);
   static Point2D NW(const Point2D &p);
