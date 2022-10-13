@@ -48,6 +48,13 @@ Point2D World::W(const Point2D& p) {
   return {p.x-1, p.y};
 }
 
+Point2D World::N(const Point2D& p) {
+    return {p.x, p.y+1}; 
+}
+
+Point2D World::S(const Point2D& p) { 
+    return {p.x, p.y-1}; 
+}
 Point2D World::NE(const Point2D& p) {
   if(p.y%2)
     return {p.x+1, p.y-1};

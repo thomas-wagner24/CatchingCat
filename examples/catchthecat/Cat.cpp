@@ -6,7 +6,7 @@
 //this is inefficient try to make better
 
 Point2D Cat::Move(World* world) {
-
+  
   auto cat = world->getCat();
 
   std::unordered_map<int, std::unordered_map<int, Node>> m;
@@ -18,7 +18,7 @@ Point2D Cat::Move(World* world) {
       m[col][row] = {{INT_MAX, INT_MAX},              // from
                       false,                           // visited
                       false,                           // inqueue
-                      world->getContent({col, line}),  // isblocked
+                      world->getContent({col, row}),  // isblocked
                       INT_MAX};                        // weight
     }
   }
@@ -44,7 +44,7 @@ Point2D Cat::Move(World* world) {
   {
     std::sort(queue.begin(), queue.end());
 
-    auto head = queue(0);
+    auto head = queue[0];
     queue.erase(queue.begin());
     m[head.x][head.y].inQueue = false;
     m[head.x][head.y].visited = true;
@@ -75,7 +75,8 @@ Point2D Cat::Move(World* world) {
   std::vector<Point2D> path;
   //current element of the path tempExit;
   Point2D tempExit = exit;
-  if (exit != {INT_MAX, INT_MAX}) 
+  Point2D max = Point2D(INT_MAX, INT_MAX);
+  if (exit != max) 
   {
       //exit is the end of the path, cat is the start
       //exit will be last element of path
@@ -88,5 +89,4 @@ Point2D Cat::Move(World* world) {
   }
   return path.front();
     
-  }
 }
